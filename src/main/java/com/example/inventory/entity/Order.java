@@ -1,23 +1,13 @@
 package com.example.inventory.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "orders")
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long productId;
     private int quantity;
     private double totalPrice;
-    private String customerName;
+    private String customerName; // Ensure this field exists
 
-    // Getters and Setters
+    // Getters and setters for all fields
     public Long getId() {
         return id;
     }
@@ -49,4 +39,13 @@ public class Order {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    public String getCustomerName() {
+        return customerName; // Ensure this method exists
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName; // Ensure this method exists
+    }
 }
+
