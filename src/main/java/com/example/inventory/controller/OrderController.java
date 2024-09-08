@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.inventory.entity.Order;
-import com.example.inventory.dto.OrderDTO;  // Assuming you have a new DTO package
 import com.example.inventory.service.OrderService;
+
+import main.java.com.example.inventory.dto.OrderDTO;
 
 @RestController
 @RequestMapping("/orders")
@@ -20,7 +21,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    // Create Order - Accepts an OrderDTO object
+    // Create Order
     @PostMapping
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
         Order order = convertToEntity(orderDTO);
@@ -28,7 +29,7 @@ public class OrderController {
         return ResponseEntity.ok(convertToDTO(savedOrder));
     }
 
-    // Get Order by ID - Returns an OrderDTO object
+    // Get Order by ID
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         Optional<Order> orderOpt = orderService.getOrder(id);
@@ -39,7 +40,7 @@ public class OrderController {
         }
     }
 
-    // Update Order - Uses OrderDTO for input and output
+    // Update Order
     @PutMapping("/{id}")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
         Order order = convertToEntity(orderDTO);
@@ -47,29 +48,31 @@ public class OrderController {
         return ResponseEntity.ok(convertToDTO(updatedOrder));
     }
 
-    // Delete Order - Keeps as is
+    // Delete Order
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }
 
-    // Utility method to convert DTO to entity
+    // Convert DTO to Entity
     private Order convertToEntity(OrderDTO orderDTO) {
         Order order = new Order();
         order.setId(orderDTO.getId());
-        order.setProductName(orderDTO.getProductName());
+        order.setProductId(orderDTO.getProductId());
         order.setQuantity(orderDTO.getQuantity());
+        order.setTotalPrice(orderDTO.getTotalPrice());
         order.setCustomerName(orderDTO.getCustomerName());
         return order;
     }
 
-    // Utility method to convert entity to DTO
+    // Convert Entity to DTO
     private OrderDTO convertToDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setProductName(order.getProductName());
+        orderDTO.setProductId(order.getProductId());
         orderDTO.setQuantity(order.getQuantity());
+        orderDTO.setTotalPrice(order.getTotalPrice());
         orderDTO.setCustomerName(order.getCustomerName());
         return orderDTO;
     }
