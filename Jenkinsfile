@@ -6,6 +6,11 @@ pipeline {
         jdk 'Java-17'
     }
 
+    environment {
+        // Using SonarQube environment variable for Sonar login
+        SONAR_SECRET = credentials('SONAR_SECRET') // Ensure SONAR_SECRET is stored in Jenkins credentials
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +21,7 @@ pipeline {
         stage('Static Code Analysis Using SonarQube') {
             steps {
                 withSonarQubeEnv('sonarqube-10.6') {
-                    sh 'mvn clean verify sonar:sonar'
+                    sh "mvn clean verify sonar:sonar -Dsonar.login=$SONAR_SECRET"
                 }      
             }
         }
@@ -63,7 +68,7 @@ pipeline {
             }
         }
 
-        stage('Quality Gate Check') { // Conditional check for SonarQube quality gate
+        stage('Quality Gate Check') { 
             steps {
                 script {
                     timeout(time: 5, unit: 'MINUTES') {
