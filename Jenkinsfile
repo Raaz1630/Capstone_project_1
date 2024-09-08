@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Raaz1630/Capstone_project.git', branch: 'main'
+                git url: 'https://github.com/Raaz1630/Capstone-project.git', branch: 'main'
             }
         }
 
@@ -87,7 +87,7 @@ pipeline {
                 script {
                     def warFile = findFiles(glob: 'target/*.war')[0].name
                     sh """
-                    curl -u admin:redhat@123 -T target/${warFile} "http://44.204.149.52:8080/manager/text/deploy?path=/inventory-app&update=true"
+                    curl -u admin:Rajesh@123 -T target/${warFile} "http://3.90.188.137:8080/manager/text/deploy?path=/capstone-app&update=true"
                     """
                 }
             }
@@ -95,7 +95,7 @@ pipeline {
 
         stage('Stage-10 : Smoke Test') { 
             steps {
-                sh 'curl --retry-delay 10 --retry 5 "http://44.204.149.52:8080/inventory-app"'
+                sh 'curl --retry-delay 10 --retry 5 "http://3.90.188.137:8080/capstone-app"'
             }
         }
     }
