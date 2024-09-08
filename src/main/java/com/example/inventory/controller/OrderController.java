@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.inventory.entity.Order;
 import com.example.inventory.service.OrderService;
-
-import main.java.com.example.inventory.dto.OrderDTO;
+import com.example.inventory.dto.OrderDTO; // Correct package for OrderDTO
 
 @RestController
 @RequestMapping("/orders")
@@ -62,7 +61,7 @@ public class OrderController {
         order.setProductId(orderDTO.getProductId());
         order.setQuantity(orderDTO.getQuantity());
         order.setTotalPrice(orderDTO.getTotalPrice());
-        order.setCustomerName(orderDTO.getCustomerName());
+        order.setCustomerName(orderDTO.getCustomerName()); // Ensure this method exists in Order
         return order;
     }
 
@@ -73,7 +72,7 @@ public class OrderController {
         orderDTO.setProductId(order.getProductId());
         orderDTO.setQuantity(order.getQuantity());
         orderDTO.setTotalPrice(order.getTotalPrice());
-        orderDTO.setCustomerName(order.getCustomerName());
+        orderDTO.setCustomerName(order.getCustomerName()); // Ensure this method exists in Order
         return orderDTO;
     }
 }
