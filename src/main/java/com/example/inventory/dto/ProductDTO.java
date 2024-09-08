@@ -1,24 +1,13 @@
-package com.example.inventory.entity;
+package com.example.inventory.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "products")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductDTO {
     private Long id;
-
     private String name;
-    private String description; // Ensure this field exists
+    private String description;
     private double price;
     private int stock;
 
-    // Getters and Setters
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -35,11 +24,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescription() { // Ensure this method exists
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) { // Ensure this method exists
+    public void setDescription(String description) {
         this.description = description;
     }
 

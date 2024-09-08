@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.inventory.dto.ProductDTO; // Import the ProductDTO class
 import com.example.inventory.entity.Product;
 import com.example.inventory.repository.ProductRepository;
 
@@ -57,7 +58,16 @@ public class ProductService {
         return false; // Handle insufficient stock or product not found
     }
 
-    public Object getProduct(long l) {
-        return null;
+    // Convert Product to ProductDTO
+    public ProductDTO convertToDTO(Product product) {
+        if (product == null) {
+            return null;
+        }
+        ProductDTO dto = new ProductDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setStock(product.getStock());
+        // Set other fields as necessary
+        return dto;
     }
 }
