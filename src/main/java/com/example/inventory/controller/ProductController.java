@@ -47,7 +47,7 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
         List<ProductDTO> productDTOs = products.stream()
                 .map(productService::convertToDTO) // Ensure this matches the method signature
-                .collect(Collectors.toList());
+                .Stream.toList();
         return new ResponseEntity<>(productDTOs, HttpStatus.OK);
     }
 
