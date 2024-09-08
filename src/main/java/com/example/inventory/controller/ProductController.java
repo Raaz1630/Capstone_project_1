@@ -1,5 +1,7 @@
 package com.example.inventory.controller;
 
+import java.util.List; // Import the List class
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
