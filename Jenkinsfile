@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         // Using SonarQube environment variable for Sonar login
-        SONAR_SECRET = credentials('SONAR_SECRET') // Ensure SONAR_SECRET is stored in Jenkins credentials
+        SONAR_SECRET = credentials('sonarqube-token') // Ensure SONAR_SECRET is stored in Jenkins credentials
     }
 
     stages {
