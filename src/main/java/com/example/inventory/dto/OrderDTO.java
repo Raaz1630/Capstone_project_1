@@ -7,7 +7,7 @@ public class OrderDTO {
     private double totalPrice;
     private String customerName; // Ensure this field exists
 
-    // Getters and Setters
+    // Getters and setters for all fields
     public Long getId() {
         return id;
     }
@@ -40,11 +40,11 @@ public class OrderDTO {
         this.totalPrice = totalPrice;
     }
 
-    public String getCustomerName() { // Add this method
-        return customerName;
+    public String getCustomerName() {
+        return customerName; // Ensure this method exists
     }
 
-    public void setCustomerName(String customerName) { // Add this method
-        this.customerName = customerName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName; // Ensure this method exists
     }
 }
