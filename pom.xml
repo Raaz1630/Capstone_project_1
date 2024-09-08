@@ -35,7 +35,7 @@
         <sonar.host.url>http://3.82.218.36:9000</sonar.host.url>
         <sonar.organization>Inventory.io</sonar.organization>
         <sonar.projectKey>Inventory.io</sonar.projectKey>
-        <sonar.login>sqp_f4b676dc3c733891509af9a342d1b35e631e84be</sonar.login>
+        <sonar.login>${env.SONAR_SECRET}</sonar.login>
     </properties>
 
     <distributionManagement>
