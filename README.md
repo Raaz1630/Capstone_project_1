@@ -10,13 +10,21 @@
 **Technologies Used:**
 
   **Java & Spring Boot**: To develop the web application.
+  
   **Maven**: For project management and building.
+  
   **Git & GitHub**: For version control.
+  
   **Jenkins**: To set up the CI/CD pipeline.
+  
   **SonarQube**: For static code analysis and quality gate enforcement.
+  
   **JFrog Artifactory**: For storing build artifacts (WAR files).
+  
   **Apache Tomcat**: To deploy the application.
+  
   **AWS CloudWatch**: To monitor the application health and performance.
+  
   **Terraform**: To provision the infrastructure on AWS.
 
 **Application Features:**
