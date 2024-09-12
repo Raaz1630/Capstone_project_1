@@ -1,10 +1,14 @@
 **Project Documentation: E-Commerce Inventory Management System with CI/CD Pipeline**
 **Project Overview:**
-The E-Commerce Inventory Management System is a Java-based web application developed using Spring Boot. This project is designed to manage product inventories, track stock levels, and process customer orders for a fictional e-commerce platform. The system provides real-time inventory updates to keep operations running smoothly.
 
-As a DevOps engineer, your responsibility was to ensure the delivery of high-quality code through a robust CI/CD pipeline while deploying the application on an Apache Tomcat server and monitoring it with AWS CloudWatch. The pipeline integrates code quality checks, artifact management, and automated deployment using AWS infrastructure.
+    The E-Commerce Inventory Management System is a Java-based web application developed using Spring Boot. This project is designed to manage product inventories, track stock 
+    levels, and process customer orders for a fictional e-commerce platform. The system provides real-time inventory updates to keep operations running smoothly.
+
+    As a DevOps engineer, your responsibility was to ensure the delivery of high-quality code through a robust CI/CD pipeline while deploying the application on an Apache Tomcat 
+    server and monitoring it with AWS CloudWatch. The pipeline integrates code quality checks, artifact management, and automated deployment using AWS infrastructure.
 
 **Technologies Used:**
+
   **Java & Spring Boot**: To develop the web application.
   **Maven**: For project management and building.
   **Git & GitHub**: For version control.
@@ -16,10 +20,14 @@ As a DevOps engineer, your responsibility was to ensure the delivery of high-qua
   **Terraform**: To provision the infrastructure on AWS.
 
 **Application Features:**
-    **Add Products**: Allows users to add new products to the inventory.
-    **Update Stock**: Enables updates to product stock levels.
-    **View Products**: Displays details about products and their stock levels.
-    **Process Orders**: Processes orders and updates the stock accordingly.
+
+   **Add Products**  : Allows users to add new products to the inventory.
+   
+   **Update Stock**  : Enables updates to product stock levels.
+   
+   **View Products** : Displays details about products and their stock levels.
+   
+   **Process Orders**: Processes orders and updates the stock accordingly.
    
 **CI/CD Pipeline Architecture:**
 The pipeline is implemented using Jenkins and consists of the following steps:
