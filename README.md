@@ -109,4 +109,6 @@ The application failed to deploy because it did not meet SonarQube's quality gat
 Actions taken included fixing critical bugs and refactoring code to pass the quality gate in subsequent pipeline runs.
 
 **Conclusion:**
-The E-Commerce Inventory Management System project showcased the full CI/CD lifecycle using Jenkins, SonarQube, JFrog Artifactory, and AWS CloudWatch. While the first deployment attempt failed due to code quality issues, it highlighted the importance of enforcing quality gates and automating deployment processes. After resolving the issues, the system was successfully deployed and monitored, fulfilling business requirements for reliable inventory management.
+    The E-Commerce Inventory Management System project showcased the full CI/CD lifecycle using Jenkins, SonarQube, JFrog Artifactory, and AWS CloudWatch. While the first 
+    deployment attempt failed due to code quality issues, it highlighted the importance of enforcing quality gates and automating deployment processes. After resolving the issues, 
+    the system was successfully deployed and monitored, fulfilling business requirements for reliable inventory management.
