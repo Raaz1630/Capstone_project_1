@@ -15,17 +15,16 @@ phases:
     commands:
       - echo AWS CLI is already installed in the standard image
       - echo Maven is already installed in the standard image
-      
 
   pre_build:
     commands:
-      - echo "pre-build started
+      - echo "pre-build started"
       - pwd
       - ls -lrt
       - echo "Code Scanning..."
       - mvn clean verify sonar:sonar
       - pwd
-      - ls -lrt 
+      - ls -lrt
       - echo "Code Scanning has been completed!"
       - echo Cleaning the project...
       - mvn clean
@@ -54,21 +53,21 @@ phases:
     commands:
       - echo Checking SonarQube quality gate status...
       - |
-      # Check the quality gate status
-      response=$(curl -s -u $SONARQUBE_TOKEN: "$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY")
-      status=$(echo $response | jq -r '.projectStatus.status')
+        # Check the quality gate status
+        response=$(curl -s -u $SONARQUBE_TOKEN: "$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY")
+        status=$(echo $response | jq -r '.projectStatus.status')
 
-      # Output the status
-      echo "Quality gate status: $status"
+        # Output the status
+        echo "Quality gate status: $status"
 
-      # Abort the build if the quality gate status is not OK
-      if [ "$status" != "OK" ]; then
-        echo "Pipeline aborted due to quality gate failure: $status"
-        exit 1
-      fi
+        # Abort the build if the quality gate status is not OK
+        if [ "$status" != "OK" ]; then
+          echo "Pipeline aborted due to quality gate failure: $status"
+          exit 1
+        fi
 
       - echo Deploying the WAR file to Tomcat...
-      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tom/temp/
+      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
       - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
       - echo Restarting Tomcat...
       - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
