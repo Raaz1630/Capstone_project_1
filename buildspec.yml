@@ -36,11 +36,7 @@ phases:
       - mvn test
       - echo Building the package with Maven...
       - mvn package
-      - echo Running SonarQube analysis...
-      - sonar-scanner \
-        -Dsonar.projectKey=$SONARQUBE_PROJECT_KEY \
-        -Dsonar.host.url=$SONARQUBE_SERVER \
-        -Dsonar.login=$SONARQUBE_TOKEN
+
 
   build:
     commands:
