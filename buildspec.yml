@@ -5,19 +5,19 @@ env:
     TOMCAT_SERVER_IP: "54.90.200.46"
     TOMCAT_USER: "admin"
     TOMCAT_PASSWORD: "Rajesh@123"
+    SONARQUBE_PROJECT_KEY: "Inventory.io"
+    SONARQUBE_SERVER: "http://54.159.232.17:9000"
+    SONARQUBE_TOKEN: "sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5"
+    S3_BUCKET: "project-capstone"
 
 phases:
   install:
-    runtime-versions:
-      java: corretto17
-      maven: 3.8  # Use an appropriate Maven version here
     commands:
-      - echo Installing necessary tools...
+      - echo AWS CLI is already installed in the standard image
+      - echo Maven is already installed in the standard image
 
   pre_build:
     commands:
-      - echo Cleaning the project...
-      - mvn clean
       - echo Validating project...
       - mvn validate
       - echo Compiling the project...
@@ -28,24 +28,26 @@ phases:
       - mvn package
       - echo Running SonarQube analysis...
       - sonar-scanner \
-        -Dsonar.projectKey=Inventory.io \
-        -Dsonar.host.url=http://54.159.232.17:9000 \
-        -Dsonar.login=sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5
-        
+        -Dsonar.projectKey=$SONARQUBE_PROJECT_KEY \
+        -Dsonar.host.url=$SONARQUBE_SERVER \
+        -Dsonar.login=$SONARQUBE_TOKEN
+
   build:
     commands:
+      - echo Deploying the WAR artifact to remote Maven repository...
+      - mvn deploy
       - echo Uploading the WAR artifact to S3...
-      - aws s3 cp target/*.war s3://capstone_project/artifacts/
+      - aws s3 cp target/*.war s3://$S3_BUCKET/artifacts/
 
   post_build:
     commands:
       - echo Checking SonarQube quality gate status...
-      - curl -u sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5:"http://54.159.232.17:9000/api/qualitygates/project_status?projectKey=Inventory.io" | jq '.projectStatus.status'
+      - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
       - echo Deploying the WAR file to Tomcat...
-      - aws s3 cp s3://capstone_project/artifacts/*.war /opt/to/temp/
-      - sudo mv /path/to/temp/*.war /opt/tomcat/webapps/
+      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tom/temp/
+      - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
       - echo Restarting Tomcat...
-      - sudo systemctl restart tomcat  
+      - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
 
 artifacts:
   files:
