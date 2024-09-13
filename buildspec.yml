@@ -15,6 +15,11 @@ phases:
     commands:
       - echo AWS CLI is already installed in the standard image
       - echo Maven is already installed in the standard image
+      - echo Installing SonarQube Scanner...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+      - unzip sonar-scanner.zip
+      - export PATH=$PATH:$PWD/sonar-scanner-4.7.0.2747-linux/bin
+      - sonar-scanner --version
 
   pre_build:
     commands:
