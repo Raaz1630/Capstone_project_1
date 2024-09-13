@@ -66,11 +66,17 @@ Build with Maven:
 
 
 **Infrastructure Setup Using Terraform:**
+
  Terraform is used to provision AWS resources for the following:
+
   **Jenkins Server**: Hosts Jenkins to manage the CI/CD pipeline
+  
   **SonarQube Server**: Dedicated instance for performing code quality checks.
+  
   **JFrog Artifactory Server**: Stores artifacts.
+  
   **Tomcat Server**: Hosts the deployed application.
+  
   **AWS CloudWatch**: Configured on all servers to track performance metrics.
 
 **Project Setup:**
@@ -121,6 +127,11 @@ Set up a CloudWatch dashboard to monitor application metrics such as CPU usage, 
 
 The application failed to deploy because it did not meet SonarQube's quality gate standards. This emphasizes the importance of maintaining high-quality code.
 Actions taken included fixing critical bugs and refactoring code to pass the quality gate in subsequent pipeline runs.
+
+![WhatsApp Image 2024-09-08 at 18 40 16_4e601086](https://github.com/user-attachments/assets/4c1c405b-09a4-4e4c-9c16-c60f8166dae7)
+
+
+
 
 **Conclusion:**
 
