@@ -8,11 +8,11 @@ env:
 
 phases:
   install:
+    runtime-versions:
+      java: corretto17
+      maven: 3.8  # Use an appropriate Maven version here
     commands:
       - echo Installing necessary tools...
-      - pip install awscli
-      - echo Installing Maven...
-      - sudo apt-get install maven -y
 
   pre_build:
     commands:
