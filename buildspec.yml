@@ -37,11 +37,10 @@ phases:
       - echo Building the package with Maven...
       - mvn package
 
-
   build:
     commands:
       - echo Deploying the WAR artifact to remote Maven repository...
-      - mvn deploy -X
+      - mvn deploy
       - echo Uploading the WAR artifact to S3...
       - aws s3 cp target/*.war s3://$S3_BUCKET/artifacts/
 
