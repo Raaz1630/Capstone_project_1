@@ -1,0 +1,52 @@
+version: 0.2
+
+env:
+  variables:
+    TOMCAT_SERVER_IP: "54.90.200.46"
+    TOMCAT_USER: "admin"
+    TOMCAT_PASSWORD: "Rajesh@123"
+
+phases:
+  install:
+    commands:
+      - echo Installing necessary tools...
+      - pip install awscli
+      - echo Installing Maven...
+      - sudo apt-get install maven -y
+
+  pre_build:
+    commands:
+      - echo Cleaning the project...
+      - mvn clean
+      - echo Validating project...
+      - mvn validate
+      - echo Compiling the project...
+      - mvn compile
+      - echo Running tests...
+      - mvn test
+      - echo Building the package with Maven...
+      - mvn package
+      - echo Running SonarQube analysis...
+      - sonar-scanner \
+        -Dsonar.projectKey=Inventory.io \
+        -Dsonar.host.url=http://54.159.232.17:9000 \
+        -Dsonar.login=sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5
+        
+  build:
+    commands:
+      - echo Uploading the WAR artifact to S3...
+      - aws s3 cp target/*.war s3://capstone_project/artifacts/
+
+  post_build:
+    commands:
+      - echo Checking SonarQube quality gate status...
+      - curl -u sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5:"http://54.159.232.17:9000/api/qualitygates/project_status?projectKey=Inventory.io" | jq '.projectStatus.status'
+      - echo Deploying the WAR file to Tomcat...
+      - aws s3 cp s3://capstone_project/artifacts/*.war /opt/to/temp/
+      - sudo mv /path/to/temp/*.war /opt/tomcat/webapps/
+      - echo Restarting Tomcat...
+      - sudo systemctl restart tomcat  
+
+artifacts:
+  files:
+    - target/*.war
