@@ -131,6 +131,20 @@ Actions taken included fixing critical bugs and refactoring code to pass the qua
 ![WhatsApp Image 2024-09-08 at 18 40 16_4e601086](https://github.com/user-attachments/assets/4c1c405b-09a4-4e4c-9c16-c60f8166dae7)
 
 
+![WhatsApp Image 2024-09-08 at 18 40 17_0eba040d](https://github.com/user-attachments/assets/f0988b2b-ebf8-4c81-861a-ce0ee1ab1431)
+
+
+![WhatsApp Image 2024-09-08 at 18 40 17_c84f7491](https://github.com/user-attachments/assets/3de771e4-5296-47b5-af3d-f7b36f5c6386)
+
+
+![WhatsApp Image 2024-09-08 at 18 40 17_d49a3671](https://github.com/user-attachments/assets/afe9cf3b-74b2-450e-94e7-5597af59b860)
+
+
+![WhatsApp Image 2024-09-08 at 18 42 43_45fb7119](https://github.com/user-attachments/assets/ec461010-a928-4bd0-9315-8066accb1558)
+
+
+
+
 
 
 **Conclusion:**
