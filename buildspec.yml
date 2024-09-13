@@ -45,28 +45,30 @@ phases:
       - echo Uploading the WAR artifact to S3...
       - aws s3 cp target/*.war s3://$S3_BUCKET/artifacts/
 
-  post_build:
-    commands:
-      - echo Checking SonarQube quality gate status...
-      - |
-        # Check the quality gate status
-        response=$(curl -s -u $SONARQUBE_TOKEN: "$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY")
-        status=$(echo $response | jq -r '.projectStatus.status')
+post_build:
+  commands:
+    - echo Checking SonarQube quality gate status...
+    - |
+      # Check the quality gate status
+      echo "Fetching quality gate status from SonarQube..."
+      response=$(curl -s -u $SONARQUBE_TOKEN: "$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY")
+      echo "Response: $response"
+      status=$(echo $response | jq -r '.projectStatus.status')
 
-        # Output the status
-        echo "Quality gate status: $status"
+      # Output the status
+      echo "Quality gate status: $status"
 
-        # Abort the build if the quality gate status is not OK
-        if [ "$status" != "OK" ]; then
-          echo "Pipeline aborted due to quality gate failure: $status"
-          exit 1
-        fi
+      # Abort the build if the quality gate status is not OK
+      if [ "$status" != "OK" ]; then
+        echo "Pipeline aborted due to quality gate failure: $status"
+        exit 1
+      fi
 
-      - echo Deploying the WAR file to Tomcat...
-      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
-      - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
-      - echo Restarting Tomcat...
-      - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
+    - echo Deploying the WAR file to Tomcat...
+    - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
+    - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
+    - echo Restarting Tomcat...
+    - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
 
 artifacts:
   files:
