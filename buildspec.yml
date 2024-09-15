@@ -24,7 +24,7 @@ phases:
   pre_build:
     commands:
       - echo Validating project...
-      - mvn validate -X
+      - mvn validate
       - echo Compiling the project...
       - mvn compile
       - echo Running tests...
@@ -32,22 +32,24 @@ phases:
       - echo Building the package with Maven...
       - mvn package
       - echo Running SonarQube analysis...
+      - sonar-scanner \
+        -Dsonar.projectKey=$SONARQUBE_PROJECT_KEY \
+        -Dsonar.host.url=$SONARQUBE_SERVER \
+        -Dsonar.login=$SONARQUBE_TOKEN
 
   build:
     commands:
       - echo Deploying the WAR artifact to remote Maven repository...
-      - mvn deploy 
+      - mvn deploy
       - echo Uploading the WAR artifact to S3...
-      - export WAR_FILE=$(ls target/*.war)
-      - echo "WAR file is $WAR_FILE"
-      - aws s3 cp $WAR_FILE s3://$S3_BUCKET/artifacts/
+      - aws s3 cp target/*.war s3://$S3_BUCKET/artifacts/
 
   post_build:
     commands:
       - echo Checking SonarQube quality gate status...
       - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
       - echo Deploying the WAR file to Tomcat...
-      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
+      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tom/temp/
       - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
       - echo Restarting Tomcat...
       - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
