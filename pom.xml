@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -20,38 +20,28 @@
     <description>Spring Boot Inventory Management Project</description>
 
     <properties>
- <!-- Java version -->            
+        <!-- Java version -->
         <java.version>17</java.version>
- <!-- JUnit versions -->            
+        <!-- JUnit versions -->
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <junit.platform.version>1.10.0</junit.platform.version>
- <!-- Maven Compiler settings -->             
+        <!-- Maven Compiler settings -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-             
- <!-- SonarQube properties -->              
-        <sonar.host.url>http://54.159.232.17:9000</sonar.host.url>
-        <sonar.organization>Inventory.io</sonar.organization>
-        <sonar.projectKey>Inventory.io</sonar.projectKey> 
-        <sonar.login>sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5</sonar.login>
     </properties>
 
-    <!-- Commented out distribution management for JFrog Artifactory -->
-  
     <distributionManagement>
         <repository>
-           <repository>
-    <id>release</id>
-    <name>S3 Release Repository</name>
-    <url>s3://project-capstone/release/</url>
-  </repository>
-  <snapshotRepository>
-    <id>snapshots</id>
-    <name>S3 Snapshot Repository</name>
-    <url>s3://project-capstone/snapshots/</url>
-  </snapshotRepository>
+            <id>release</id>
+            <name>S3 Release Repository</name>
+            <url>s3://project-capstone/release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>S3 Snapshot Repository</name>
+            <url>s3://project-capstone/snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
- 
 
     <dependencies>
         <dependency>
