@@ -37,20 +37,21 @@
     </properties>
 
     <!-- Commented out distribution management for JFrog Artifactory -->
-    <!--
+  
     <distributionManagement>
         <repository>
-            <id>release</id>
-            <name>inventory-libs-release-local</name>
-            <url>http://54.86.77.147:8082/artifactory/inventory-libs-release-local//</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>inventory-libs-snapshots-local</name>
-            <url>http://54.86.77.147:8082/artifactory/inventory-libs-snapshots-local/</url>
-        </snapshotRepository>
+           <repository>
+    <id>release</id>
+    <name>S3 Release Repository</name>
+    <url>s3://project-capstone/release/</url>
+  </repository>
+  <snapshotRepository>
+    <id>snapshots</id>
+    <name>S3 Snapshot Repository</name>
+    <url>s3://project-capstone/snapshots/</url>
+  </snapshotRepository>
     </distributionManagement>
-    -->
+ 
 
     <dependencies>
         <dependency>
