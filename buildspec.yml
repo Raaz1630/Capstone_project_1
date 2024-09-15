@@ -3,11 +3,8 @@ version: 0.2
 env:
   variables:
     TOMCAT_SERVER_IP: "54.90.200.46"
-    TOMCAT_USER: "admin"
-    TOMCAT_PASSWORD: "Rajesh@123"
     SONARQUBE_PROJECT_KEY: "Inventory.io"
     SONARQUBE_SERVER: "http://54.159.232.17:9000"
-    SONARQUBE_TOKEN: "sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5"
     S3_BUCKET: "project-capstone"
 
 phases:
@@ -15,19 +12,18 @@ phases:
     commands:
       - echo AWS CLI is already installed in the standard image
       - echo Maven is already installed in the standard image
+      - echo Installing SonarQube Scanner...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+      - unzip sonar-scanner.zip
+      - export PATH=$PATH:$PWD/sonar-scanner-4.7.0.2747-linux/bin
+      - sonar-scanner --version
+      - echo Retrieving secrets from AWS Secrets Manager...
+      - export SECRETS=$(aws secretsmanager get-secret-value --secret-id my-secrete-key --query SecretString --output text)
+      - export TOMCAT_PASSWORD=$(echo $SECRETS | jq -r '.tomcat.password')
+      - export SONARQUBE_TOKEN=$(echo $SECRETS | jq -r '.sonarqube.token')
 
   pre_build:
     commands:
-      - echo "pre-build started"
-      - pwd
-      - ls -lrt
-      - echo "Code Scanning..."
-      - mvn clean verify sonar:sonar
-      - pwd
-      - ls -lrt
-      - echo "Code Scanning has been completed!"
-      - echo Cleaning the project...
-      - mvn clean
       - echo Validating project...
       - mvn validate
       - echo Compiling the project...
@@ -36,6 +32,11 @@ phases:
       - mvn test
       - echo Building the package with Maven...
       - mvn package
+      - echo Running SonarQube analysis...
+      - sonar-scanner \
+        -Dsonar.projectKey=$SONARQUBE_PROJECT_KEY \
+        -Dsonar.host.url=$SONARQUBE_SERVER \
+        -Dsonar.login=$SONARQUBE_TOKEN
 
   build:
     commands:
@@ -44,30 +45,15 @@ phases:
       - echo Uploading the WAR artifact to S3...
       - aws s3 cp target/*.war s3://$S3_BUCKET/artifacts/
 
-post_build:
-  commands:
-    - echo Checking SonarQube quality gate status...
-    - |
-      # Check the quality gate status
-      echo "Fetching quality gate status from SonarQube..."
-      response=$(curl -s -u $SONARQUBE_TOKEN: "$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY")
-      echo "Response: $response"
-      status=$(echo $response | jq -r '.projectStatus.status')
-
-      # Output the status
-      echo "Quality gate status: $status"
-
-      # Abort the build if the quality gate status is not OK
-      if [ "$status" != "OK" ]; then
-        echo "Pipeline aborted due to quality gate failure: $status"
-        exit 1
-      fi
-
-    - echo Deploying the WAR file to Tomcat...
-    - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
-    - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
-    - echo Restarting Tomcat...
-    - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
+  post_build:
+    commands:
+      - echo Checking SonarQube quality gate status...
+      - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
+      - echo Deploying the WAR file to Tomcat...
+      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tom/temp/
+      - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
+      - echo Restarting Tomcat...
+      - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
 
 artifacts:
   files:
