@@ -36,7 +36,7 @@ phases:
   build:
     commands:
       - echo Deploying the WAR artifact to remote Maven repository...
-      - mvn deploy -DaltDeploymentRepository=release::default::s3://$S3_BUCKET/release/
+      - mvn deploy 
       - echo Uploading the WAR artifact to S3...
       - export WAR_FILE=$(ls target/*.war)
       - echo "WAR file is $WAR_FILE"
@@ -48,7 +48,7 @@ phases:
       - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
       - echo Deploying the WAR file to Tomcat...
       - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
-      - sudo mv /opt/tomcat/temp/$(basename $WAR_FILE) /opt/tomcat/webapps/
+      - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
       - echo Restarting Tomcat...
       - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
 
