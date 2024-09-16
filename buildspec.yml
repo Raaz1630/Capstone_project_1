@@ -44,13 +44,16 @@ phases:
       - aws codeartifact put-package-version --domain capstone --domain-owner <domain-owner-id> --repository capstone_project --package inventory --package-version 1.0.0 --file target/*.war
 
   post_build:
-    commands:
-      - echo Checking SonarQube quality gate status...
-      - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
-      - echo Deploying the WAR file to Tomcat...
-      - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
-      - echo Restarting Tomcat...
-      - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
+  commands:
+    - echo Checking SonarQube quality gate status...
+    - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
+    - echo Listing contents of /opt/tomcat/temp/...
+    - ls -l /opt/tomcat/temp/
+    - echo Moving WAR file to Tomcat webapps directory...
+    - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
+    - echo Restarting Tomcat...
+    - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
+
 
 artifacts:
   files:
