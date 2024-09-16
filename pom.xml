@@ -20,28 +20,20 @@
     <description>Spring Boot Inventory Management Project</description>
 
     <properties>
-        <!-- Java version -->
+        <!-- Java version -->            
         <java.version>17</java.version>
-        <!-- JUnit versions -->
+        <!-- JUnit versions -->            
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <junit.platform.version>1.10.0</junit.platform.version>
-        <!-- Maven Compiler settings -->
+        <!-- Maven Compiler settings -->             
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <!-- SonarQube properties -->              
+        <sonar.host.url>http://3.88.53.158:9000</sonar.host.url>
+        <sonar.organization>Inventory.io</sonar.organization>
+        <sonar.projectKey>Inventory.io</sonar.projectKey> 
+        <sonar.login>${env.SONARQUBE_TOKEN}</sonar.login>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>release</id>
-            <name>S3 Release Repository</name>
-            <url>s3://project-capstone/release/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>S3 Snapshot Repository</name>
-            <url>s3://project-capstone/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -112,4 +104,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>codeartifact-repo</id>
+            <name>CodeArtifact Repository</name>
+            <url>https://capstone-730335265678.d.codeartifact.us-east-1.amazonaws.com/maven/capstone_project/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>codeartifact-repo</id>
+            <name>CodeArtifact Repository</name>
+            <url>https://capstone-730335265678.d.codeartifact.us-east-1.amazonaws.com/maven/capstone_project/</url>
+        </repository>
+    </distributionManagement>
 </project>
