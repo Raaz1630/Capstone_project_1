@@ -8,7 +8,7 @@ env:
     SONARQUBE_PROJECT_KEY: "Inventory.io"
     SONARQUBE_SERVER: "http://54.159.232.17:9000"
     SONARQUBE_TOKEN: "sqp_5e6bf93ee8c5bc90bb8d200a87175084f1c0ffa5"
-    S3_BUCKET: "project-capstone"
+    CODEARTIFACT_SECRET_ID: "secrete-key"  # Secret ID in Secrets Manager
 
 phases:
   install:
@@ -23,6 +23,8 @@ phases:
 
   pre_build:
     commands:
+      - echo Fetching CodeArtifact auth token from Secrets Manager...
+      - export CODEARTIFACT_AUTH_TOKEN=$(aws secretsmanager get-secret-value --secret-id $CODEARTIFACT_SECRET_ID --query 'SecretString' --output text | jq -r '.CODEARTIFACT_AUTH_TOKEN')
       - echo Validating project...
       - mvn validate
       - echo Compiling the project...
@@ -39,17 +41,17 @@ phases:
 
   build:
     commands:
-      - echo Deploying the WAR artifact to remote Maven repository...
+      - echo Deploying the WAR artifact to CodeArtifact...
       - mvn deploy
-      - echo Uploading the WAR artifact to S3...
-      - aws s3 cp target/*.war s3://$S3_BUCKET/artifacts/
+      - echo Uploading the WAR artifact to CodeArtifact...
+      - aws codeartifact put-package-version --domain capstone --domain-owner <domain-owner-id> --repository capstone_project --package inventory --package-version 1.0.0 --file target/*.war
 
   post_build:
     commands:
       - echo Checking SonarQube quality gate status...
       - curl -u $SONARQUBE_TOKEN:"$SONARQUBE_SERVER/api/qualitygates/project_status?projectKey=$SONARQUBE_PROJECT_KEY" | jq '.projectStatus.status'
       - echo Deploying the WAR file to Tomcat...
-      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tom/temp/
+      - aws s3 cp s3://$S3_BUCKET/artifacts/*.war /opt/tomcat/temp/
       - sudo mv /opt/tomcat/temp/*.war /opt/tomcat/webapps/
       - echo Restarting Tomcat...
       - sudo systemctl restart tomcat  # Use 'service tomcat restart' for older versions
