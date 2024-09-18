@@ -4,7 +4,7 @@
     The E-Commerce Inventory Management System is a Java-based web application developed using Spring Boot. This project is designed to manage product inventories, track stock 
     levels, and process customer orders for a fictional e-commerce platform. The system provides real-time inventory updates to keep operations running smoothly.
 
-    As a DevOps engineer, your responsibility was to ensure the delivery of high-quality code through a robust CI/CD pipeline while deploying the application on an Apache Tomcat 
+    As a DevOps engineer, our responsibility was to ensure the delivery of high-quality code through a robust CI/CD pipeline while deploying the application on an Apache Tomcat 
     server and monitoring it with AWS CloudWatch. The pipeline integrates code quality checks, artifact management, and automated deployment using AWS infrastructure.
 
 **Technologies Used:**
